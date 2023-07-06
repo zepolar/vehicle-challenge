@@ -1,17 +1,18 @@
-package com.linbrox.vehicle.hyundai;
+package com.linbrox.vehicle.application.service;
 
 
+import com.linbrox.vehicle.application.api.HyundaiAPI;
 import com.linbrox.vehicle.common.HyundaiModelEnum;
-import com.linbrox.vehicle.hyundai.response.HyundaiResponse;
+import com.linbrox.vehicle.application.api.response.HyundaiResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 @Service
-public class HyundaiService {
+public class ExternalAPIService {
     private final HyundaiAPI hyundaiAPI;
 
-    public HyundaiService(HyundaiAPI hyundaiAPI) {
+    public ExternalAPIService(HyundaiAPI hyundaiAPI) {
         this.hyundaiAPI = hyundaiAPI;
     }
 

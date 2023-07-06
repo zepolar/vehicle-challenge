@@ -1,8 +1,8 @@
-package com.linbrox.vehicle.hyundai;
+package com.linbrox.vehicle.application.api;
 
 
 import com.linbrox.vehicle.common.HyundaiModelEnum;
-import com.linbrox.vehicle.hyundai.response.HyundaiResponse;
+import com.linbrox.vehicle.application.api.response.HyundaiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;

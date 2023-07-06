@@ -1,8 +1,8 @@
-package com.linbrox.vehicle.hyundai;
+package com.linbrox.vehicle.application.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.linbrox.vehicle.application.api.response.HyundaiResponse;
 import com.linbrox.vehicle.common.HyundaiModelEnum;
-import com.linbrox.vehicle.hyundai.response.HyundaiResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;

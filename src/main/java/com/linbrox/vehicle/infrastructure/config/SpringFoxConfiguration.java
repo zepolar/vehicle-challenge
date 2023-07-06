@@ -1,4 +1,4 @@
-package com.linbrox.vehicle.config;
+package com.linbrox.vehicle.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

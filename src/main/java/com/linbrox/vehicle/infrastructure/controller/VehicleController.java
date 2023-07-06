@@ -1,8 +1,8 @@
-package com.linbrox.vehicle.controller;
+package com.linbrox.vehicle.infrastructure.controller;
 
+import com.linbrox.vehicle.application.service.VehicleService;
 import com.linbrox.vehicle.common.HyundaiModelEnum;
-import com.linbrox.vehicle.entity.Vehicle;
-import com.linbrox.vehicle.service.VehicleService;
+import com.linbrox.vehicle.domain.model.Vehicle;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,8 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @RestController
 @Api(tags = "Vehicle")
@@ -31,9 +30,9 @@ public class VehicleController {
             @ApiResponse(responseCode = "500", description = "Something bad happened")
     })
     @GetMapping("/vehicle/migrate")
-    public List<Vehicle> migrateVehicleFromExternalApi(@ApiParam(value = "Model")
+    public Flux<Vehicle> migrateVehicleFromExternalApi(@ApiParam(value = "Model")
                                           @RequestParam HyundaiModelEnum modelEnum) {
-        return vehicleService.migrateVehiclesFromExternal(modelEnum);
+        return Flux.fromIterable(vehicleService.migrateVehiclesFromExternal(modelEnum));
     }
 
     @ApiOperation(value = "Retrieve information of vehicles based on name and model", notes = "")
@@ -43,7 +42,7 @@ public class VehicleController {
             @ApiResponse(responseCode = "500", description = "Something bad happened")
     })
     @GetMapping("/vehicle/list")
-    public List<Vehicle> findByNameAndModel(
+    public Flux<Vehicle> findByNameAndModel(
             @ApiParam(value = "Model")
             @RequestParam(required = false) HyundaiModelEnum model,
             @ApiParam(value = "Name")
@@ -51,17 +50,17 @@ public class VehicleController {
         ) {
         if (model == null && name == null) {
             // No parameters provided, retrieve all vehicles
-            return vehicleService.findAll();
+            return Flux.fromIterable(vehicleService.findAll());
         }
         if(model == null && StringUtils.isNotEmpty(name)){
-            return vehicleService.findByName(name);
+            return Flux.fromIterable(vehicleService.findByName(name));
         }
         if(model !=null && StringUtils.isEmpty(name)){
-            return vehicleService.findByModel(model);
+            return Flux.fromIterable(vehicleService.findByModel(model));
         }
         else {
             // Parameters provided, filter vehicles by model and name
-            return vehicleService.findByNameAndModel(name, model);
+            return Flux.fromIterable(vehicleService.findByNameAndModel(name, model));
         }
     }
 

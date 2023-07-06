@@ -1,4 +1,4 @@
-package com.linbrox.vehicle.exception;
+package com.linbrox.vehicle.infrastructure.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

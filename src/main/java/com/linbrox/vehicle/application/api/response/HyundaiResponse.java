@@ -1,4 +1,4 @@
-package com.linbrox.vehicle.hyundai.response;
+package com.linbrox.vehicle.application.api.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

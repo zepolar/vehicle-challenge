@@ -1,27 +1,28 @@
-package com.linbrox.vehicle.service;
+package com.linbrox.vehicle.application.service.impl;
 
-
+import com.linbrox.vehicle.application.service.ExternalAPIService;
+import com.linbrox.vehicle.application.service.VehicleService;
 import com.linbrox.vehicle.common.HyundaiModelEnum;
-import com.linbrox.vehicle.entity.Vehicle;
-import com.linbrox.vehicle.hyundai.HyundaiService;
-import com.linbrox.vehicle.repository.VehicleRepository;
-import org.springframework.stereotype.Service;
+import com.linbrox.vehicle.domain.model.Vehicle;
+import com.linbrox.vehicle.domain.repository.VehicleRepository;
 
 import java.util.List;
 
-@Service
-public class VehicleService {
+public class VehicleServiceImpl implements VehicleService {
 
+    private final ExternalAPIService externalAPIService;
     private final VehicleRepository vehicleRepository;
-    private final HyundaiService hyundaiService;
-    public VehicleService(VehicleRepository vehicleRepository, HyundaiService hyundaiService){
+
+    public VehicleServiceImpl(ExternalAPIService externalAPIService, VehicleRepository vehicleRepository) {
+        this.externalAPIService = externalAPIService;
         this.vehicleRepository = vehicleRepository;
-        this.hyundaiService = hyundaiService;
     }
-    public List<Vehicle> migrateVehiclesFromExternal(HyundaiModelEnum hyundaiModel){
-        var vehicleList = this.vehicleRepository.findByHyundaiModel(hyundaiModel);
+
+    @Override
+    public List<Vehicle> migrateVehiclesFromExternal(HyundaiModelEnum hyundaiModel) {
+        var vehicleList = this.vehicleRepository.findByModel(hyundaiModel);
         if (vehicleList.isEmpty()) {
-            this.hyundaiService.callExternalAPI(hyundaiModel)
+            this.externalAPIService.callExternalAPI(hyundaiModel)
                     .doOnNext(element -> {
                         var vehicle = Vehicle.builder()
                                 .code(element.getCode())
@@ -47,19 +48,24 @@ public class VehicleService {
         }
     }
 
-    public List<Vehicle> findAll(){
+    @Override
+    public List<Vehicle> findAll() {
         return this.vehicleRepository.findAll();
     }
 
-    public List<Vehicle> findByNameAndModel(String name, HyundaiModelEnum modelEnum){
-        return this.vehicleRepository.findByHyundaiModelAndAndName(modelEnum, name);
+    @Override
+    public List<Vehicle> findByNameAndModel(String name, HyundaiModelEnum modelEnum) {
+        return this.vehicleRepository.findByNameAndModel(name, modelEnum);
     }
 
-    public List<Vehicle> findByModel(HyundaiModelEnum model){
-        return this.vehicleRepository.findByHyundaiModel(model);
-    }
-    public List<Vehicle> findByName(String name){
-        return this.vehicleRepository.findByName(name);
+    @Override
+    public List<Vehicle> findByModel(HyundaiModelEnum model) {
+
+        return this.vehicleRepository.findByModel(model);
     }
 
+    @Override
+    public List<Vehicle> findByName(String name) {
+        return  this.vehicleRepository.findByName(name);
+    }
 }
